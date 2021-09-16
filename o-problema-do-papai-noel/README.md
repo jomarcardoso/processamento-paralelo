@@ -23,6 +23,8 @@ o último momento possível.
 
 Obs: As definições devem ser complementadas com a literatura.
 
+## Projeto
+
 ```bash
 javac src/Main.java -d dist
 cd dist && java Main
