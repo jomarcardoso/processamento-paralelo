@@ -1,23 +1,22 @@
 public class Elfo extends Thread {
-  SecretariaDoNoel secretariaDoNoel;
+  PapaiNoel papaiNoel;
 
-  public Elfo(SecretariaDoNoel secretariaDoNoel) {
+  public Elfo(PapaiNoel papaiNoel) {
     super();
   }
 
   private void irParaFila() {
-
+    try{
+      this.papaiNoel.adicionarElfoAFila(this);
+      this.wait();
+    } catch(InterruptedException e){
+      e.printStackTrace();
+    }
   }
 
+  @Override
   public void run() {
-    while (true) {
-      try{
-        Thread.sleep((int)(Math.random() * 1000));
-        this.irParaFila();
-      }
-      catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-    }
+    this.setPriority(Thread.MIN_PRIORITY);
+    this.irParaFila();
   }
 }
