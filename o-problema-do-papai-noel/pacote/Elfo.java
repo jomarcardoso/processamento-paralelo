@@ -1,3 +1,5 @@
+package pacote;
+
 public class Elfo extends Thread {
   PapaiNoel papaiNoel;
 
