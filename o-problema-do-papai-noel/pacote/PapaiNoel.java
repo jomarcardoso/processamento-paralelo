@@ -24,7 +24,6 @@ public class PapaiNoel extends Thread {
   public void adicionarRenaAFila(Rena rena) throws InterruptedException {
     this.filaRenas.add(rena);
     rena.wait();
-    notify();
   }
 
   public void gerenciarFila() {
@@ -35,18 +34,27 @@ public class PapaiNoel extends Thread {
     //   notify();
     // }
 
-    while(true) {
+    boolean applicationRun = true;
+
+    while(applicationRun) {
       System.out.println("total renas " + this.filaRenas.size());
 
       if (this.filaRenas.size() == 8) {
-        int count = 0;
+        // int count = 0;
 
-        System.out.println("rou rou rou vou entregar presentes");
+        // System.out.println("rou rou rou vou entregar presentes");
 
-        while(this.filaRenas.size() > count) {
-          this.filaRenas.get(count).notify();
-          count++;
-        }
+        this.setEstado(EstadoPapaiNoel.DISTRIBUINDO_PRESENTES);
+
+        // notifyAll();
+
+        // while(this.filaRenas.size() > count) {
+        //   // this.filaRenas.get(count).notify();
+        //   // this.filaRenas.get(count).vai();
+        //   count++;
+        // }
+
+        applicationRun = false;
       }
     }
   }

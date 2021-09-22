@@ -24,7 +24,7 @@ public class Main {
     rena7.start();
     rena8.start();
 
-    System.out.println("Papai Noel está cuidando a fila");
+    // System.out.println("Papai Noel está cuidando a fila");
 
     papaiNoel.gerenciarFila();
 

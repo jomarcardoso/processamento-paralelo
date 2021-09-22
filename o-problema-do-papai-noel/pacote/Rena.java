@@ -13,28 +13,29 @@ public class Rena extends Thread {
 
   private void aproveitarFerias() throws InterruptedException {
     System.out.println(this.name + " de férias");
-    this.notify();
-    // this.wait();
+    Thread.sleep((int)(Math.random() * 10000));
   }
 
-  private void irParaFila() throws InterruptedException {
+  private synchronized void irParaFila() throws InterruptedException {
     System.out.println(this.name + " na fila");
 
     this.setPriority(Thread.MAX_PRIORITY);
     papaiNoel.adicionarRenaAFila(this);
-
-    System.out.println(this.name + " entregando presentes");
   }
 
   @Override
   public void run() {
-    synchronized(this) {
-      try {
-        this.aproveitarFerias();
-        this.irParaFila();
-      } catch (InterruptedException e) {
-        e.printStackTrace();
+    try {
+      this.aproveitarFerias();
+      this.irParaFila();
+
+      while(papaiNoel.getEstado() != EstadoPapaiNoel.DISTRIBUINDO_PRESENTES) {
+        // wait();
       }
+
+      notify();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
   }
 }
