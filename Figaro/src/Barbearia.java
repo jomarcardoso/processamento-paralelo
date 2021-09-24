@@ -8,7 +8,6 @@ public class Barbearia {
     int qntBarbeiros;
     int sofa;
     LinkedList<Cliente> clientes;
-//    LinkedList<Cliente> clientesSaguao;
 
     Random random = new Random();
 
@@ -54,20 +53,25 @@ public class Barbearia {
         System.out.println("Cliente " + cliente.idCliente + " entrou pela porta.");
 
         synchronized (clientes) {
-            if (clientes.size() == sofa) {
-                System.out.println("O sofá está cheio");
-            } else if (barbeirosLivres > 0) {
+            System.out.println("Há " + clientes.size() + " clientes na barberia.");
+            if (clientes.size() < sofa && barbeirosLivres > 0) {
                 System.out.println("Há barbeiros disponíveis então o cliente " + cliente.idCliente + " vai até eles para cortar o cabelo.");
 
                 clientes.offer(cliente);
                 clientes.notify();
-            } else {
+            } else if (clientes.size() < sofa && barbeirosLivres <= 0) {
                 System.out.println("Não há barbeiros disponíveis então o cliente " + cliente.idCliente + " irá esperar no sofá.");
                 clientes.offer(cliente);
 
                 if (clientes.size() == 1) {
                     clientes.notify();
                 }
+            } else if (clientes.size() >= sofa && clientes.size() < qntMaxClientes) {
+                System.out.println("O sofá está cheio, o cliente " + cliente.idCliente + " irá esperar no saguão.");
+
+                clientes.offer(cliente);
+            } else if (clientes.size() >= sofa && clientes.size() >= qntMaxClientes) {
+                System.out.println("A barbearia está cheia, o cliente " + cliente.idCliente + " irá embora.");
             }
         }
     }
