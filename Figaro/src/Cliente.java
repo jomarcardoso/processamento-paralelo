@@ -14,7 +14,6 @@ public class Cliente extends Thread {
     }
 
     private synchronized void irCortarCabelo() {
-
         barbearia.add(this);
     }
 

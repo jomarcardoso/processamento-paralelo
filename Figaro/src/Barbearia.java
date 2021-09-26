@@ -1,20 +1,19 @@
 import java.util.LinkedList;
-import java.util.Random;
 
 public class Barbearia {
 
+    Integer maquininhasLivres;
     int barbeirosLivres;
     int qntMaxClientes;
     int qntBarbeiros;
     int sofa;
     LinkedList<Cliente> clientes;
 
-    Random random = new Random();
-
-    public Barbearia(int qntBarbeiros, int qntMaxClientes, int sofa) {
+    public Barbearia(int qntBarbeiros, int qntMaxClientes, int sofa, int qntMaquininhas) {
         this.sofa = sofa;
         this.qntBarbeiros = qntBarbeiros;
         this.barbeirosLivres = qntBarbeiros;
+        this.maquininhasLivres = qntMaquininhas;
         this.qntMaxClientes = qntMaxClientes;
         clientes = new LinkedList();
     }
@@ -40,10 +39,39 @@ public class Barbearia {
 
         barbeirosLivres--;
 
-        System.out.println("Barbeiro " + idBarbeiro + " está cortando o cabelo do cliente " + cliente.idCliente + ".");
+        System.out.println("Barbeiro " + idBarbeiro + " cortou o cabelo do cliente " + cliente.idCliente + ".");
+
+        System.out.println("Barbeiro " + idBarbeiro + " vai tentar receber o pagamento do cliente " + cliente.idCliente + ".");
+
+        pagamento(idBarbeiro, cliente);
+    }
+
+    public void pagamento(int idBarbeiro, Cliente cliente) {
+        synchronized (maquininhasLivres) {
+            while (maquininhasLivres <= 0) {
+                System.out.println("Não há maquininhas livres, o barbeiro " + idBarbeiro + " irá esperar para receber o pagamento do cliente " + cliente.idCliente + ".");
+
+                try {
+                    maquininhasLivres.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            System.out.println("Há " + maquininhasLivres + " maquininhas livres, o barbeiro " + idBarbeiro + " receber o pagamento do cliente " + cliente.idCliente + ".");
+
+            maquininhasLivres--;
+
+            System.out.println("O cliente " + cliente.idCliente + " pagou pelo corte com o barbeiro " + idBarbeiro + " e vai embora.");
+
+            maquininhasLivres++;
+            maquininhasLivres.notify();
+
+            System.out.println("O barbeiro " + idBarbeiro + " deixou a maquininha no balcão novamente.");
+        }
 
         if (clientes.size() > 0) {
-            System.out.println("Barbeiro " + idBarbeiro + " vai buscar o próximo cliente.");
+            System.out.println("O barbeiro " + idBarbeiro + " vai buscar o próximo cliente.");
         }
 
         barbeirosLivres++;
