@@ -1,15 +1,17 @@
 package pacote;
 
 public class Elfo extends Thread implements Servical {
-  PapaiNoel papaiNoel;
+  SecretariaPapaiNoel secretariaPapaiNoel;
 
-  public Elfo(PapaiNoel papaiNoel) {
+  public Elfo(SecretariaPapaiNoel secretariaPapaiNoel) {
     super();
+
+    this.secretariaPapaiNoel = secretariaPapaiNoel;
   }
 
   private void irParaFila() {
     try{
-      this.papaiNoel.adicionarAFila(this);
+      this.secretariaPapaiNoel.adicionarAFila(this);
       this.wait();
     } catch(InterruptedException e){
       e.printStackTrace();
