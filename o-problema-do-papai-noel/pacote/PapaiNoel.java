@@ -1,11 +1,20 @@
 package pacote;
 
-import java.util.ArrayList;
-
 public class PapaiNoel extends Thread {
   private EstadoPapaiNoel estado;
-  private ArrayList<Elfo> filaElfos = new ArrayList<Elfo>();
-  private ArrayList<Rena> filaRenas = new ArrayList<Rena>();
+  private SecretariaPapaiNoel secretariaPapaiNoel;
+
+  public PapaiNoel(SecretariaPapaiNoel secretariaPapaiNoel) {
+    this.setSecretariaPapaiNoel(secretariaPapaiNoel);
+  }
+
+  public SecretariaPapaiNoel getSecretariaPapaiNoel() {
+    return secretariaPapaiNoel;
+  }
+
+  public void setSecretariaPapaiNoel(SecretariaPapaiNoel secretariaPapaiNoel) {
+    this.secretariaPapaiNoel = secretariaPapaiNoel;
+  }
 
   public EstadoPapaiNoel getEstado() {
     return estado;
@@ -16,48 +25,43 @@ public class PapaiNoel extends Thread {
     this.estado = estado;
   }
 
-  public void adicionarElfoAFila(Elfo elfo) throws InterruptedException {
-    this.filaElfos.add(elfo);
-    elfo.wait();
+  @Override
+  public void run() {
+
   }
 
-  public void adicionarRenaAFila(Rena rena) throws InterruptedException {
-    this.filaRenas.add(rena);
-    rena.wait();
-  }
+  // public void gerenciarFila() {
+  //   // resolver as threads com mais prioridade que foram setadas já
+  //   // Elfo elfo = filaElfos.get(0);
 
-  public void gerenciarFila() {
-    // resolver as threads com mais prioridade que foram setadas já
-    // Elfo elfo = filaElfos.get(0);
+  //   // synchronized(elfo) {
+  //   //   notify();
+  //   // }
 
-    // synchronized(elfo) {
-    //   notify();
-    // }
+  //   boolean applicationRun = true;
 
-    boolean applicationRun = true;
+  //   while(applicationRun) {
+  //     System.out.println("total renas " + this.filaRenas.size());
 
-    while(applicationRun) {
-      System.out.println("total renas " + this.filaRenas.size());
+  //     if (this.filaRenas.size() == 8) {
+  //       // int count = 0;
 
-      if (this.filaRenas.size() == 8) {
-        // int count = 0;
+  //       // System.out.println("rou rou rou vou entregar presentes");
 
-        // System.out.println("rou rou rou vou entregar presentes");
+  //       this.setEstado(EstadoPapaiNoel.DISTRIBUINDO_PRESENTES);
 
-        this.setEstado(EstadoPapaiNoel.DISTRIBUINDO_PRESENTES);
+  //       // notifyAll();
 
-        // notifyAll();
+  //       // while(this.filaRenas.size() > count) {
+  //       //   // this.filaRenas.get(count).notify();
+  //       //   // this.filaRenas.get(count).vai();
+  //       //   count++;
+  //       // }
 
-        // while(this.filaRenas.size() > count) {
-        //   // this.filaRenas.get(count).notify();
-        //   // this.filaRenas.get(count).vai();
-        //   count++;
-        // }
-
-        applicationRun = false;
-      }
-    }
-  }
+  //       applicationRun = false;
+  //     }
+  //   }
+  // }
 
   // @Override
   // public void run() {

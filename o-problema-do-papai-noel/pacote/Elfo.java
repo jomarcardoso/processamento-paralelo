@@ -1,6 +1,6 @@
 package pacote;
 
-public class Elfo extends Thread {
+public class Elfo extends Thread implements Servical {
   PapaiNoel papaiNoel;
 
   public Elfo(PapaiNoel papaiNoel) {
@@ -9,7 +9,7 @@ public class Elfo extends Thread {
 
   private void irParaFila() {
     try{
-      this.papaiNoel.adicionarElfoAFila(this);
+      this.papaiNoel.adicionarAFila(this);
       this.wait();
     } catch(InterruptedException e){
       e.printStackTrace();
@@ -20,5 +20,11 @@ public class Elfo extends Thread {
   public void run() {
     this.setPriority(Thread.MIN_PRIORITY);
     this.irParaFila();
+  }
+
+  @Override
+  public void trabalhar() {
+    // TODO Auto-generated method stub
+
   }
 }

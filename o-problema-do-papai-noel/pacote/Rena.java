@@ -1,13 +1,13 @@
 package pacote;
 
-public class Rena extends Thread {
-  PapaiNoel papaiNoel;
+public class Rena extends Thread implements Servical {
+  SecretariaPapaiNoel secretariaPapaiNoel;
   String name;
 
-  public Rena(String name, PapaiNoel papaiNoel) {
+  public Rena(String name, SecretariaPapaiNoel secretariaPapaiNoel) {
     super();
 
-    this.papaiNoel = papaiNoel;
+    this.secretariaPapaiNoel = secretariaPapaiNoel;
     this.name = name;
   }
 
@@ -17,10 +17,9 @@ public class Rena extends Thread {
   }
 
   private synchronized void irParaFila() throws InterruptedException {
-    System.out.println(this.name + " na fila");
-
+    // System.out.println(this.name + " na fila");
     this.setPriority(Thread.MAX_PRIORITY);
-    papaiNoel.adicionarRenaAFila(this);
+    secretariaPapaiNoel.adicionarAFila(this);
   }
 
   @Override
@@ -29,13 +28,19 @@ public class Rena extends Thread {
       this.aproveitarFerias();
       this.irParaFila();
 
-      while(papaiNoel.getEstado() != EstadoPapaiNoel.DISTRIBUINDO_PRESENTES) {
+      // while(papaiNoel.getEstado() != EstadoPapaiNoel.DISTRIBUINDO_PRESENTES) {
         // wait();
-      }
+      // }
 
-      notify();
+      // notify();
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
+  }
+
+  @Override
+  public void trabalhar() {
+    // TODO Auto-generated method stub
+
   }
 }
