@@ -1,6 +1,6 @@
 package pacote;
 
-public class Rena extends Thread implements Servical {
+public class Rena extends Thread {
   SecretariaPapaiNoel secretariaPapaiNoel;
   String name;
 
@@ -12,35 +12,26 @@ public class Rena extends Thread implements Servical {
   }
 
   private void aproveitarFerias() throws InterruptedException {
-    System.out.println(this.name + " de férias");
-    Thread.sleep((int)(Math.random() * 10000));
+    System.out.println(this.name + " de ferias");
+    Thread.sleep((int)(15000 + Math.random() * 5000));
   }
 
   private synchronized void irParaFila() throws InterruptedException {
-    // System.out.println(this.name + " na fila");
+    System.out.println(this.name + " na fila");
     this.setPriority(Thread.MAX_PRIORITY);
-    secretariaPapaiNoel.adicionarAFila(this);
+    secretariaPapaiNoel.adicionarRenaAFila(this);
   }
 
   @Override
   public void run() {
     try {
-      this.aproveitarFerias();
-      this.irParaFila();
-
-      // while(papaiNoel.getEstado() != EstadoPapaiNoel.DISTRIBUINDO_PRESENTES) {
-        // wait();
-      // }
-
-      // notify();
+      while(true) {
+        this.aproveitarFerias();
+        this.irParaFila();
+        Thread.sleep((int)(1000));
+      }
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-  }
-
-  @Override
-  public void trabalhar() {
-    // TODO Auto-generated method stub
-
   }
 }

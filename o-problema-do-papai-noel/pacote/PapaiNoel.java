@@ -27,7 +27,10 @@ public class PapaiNoel extends Thread {
 
   @Override
   public void run() {
+    while(true) {
 
+      // this.secretariaPapaiNoel.entregar();
+    }
   }
 
   // public void gerenciarFila() {

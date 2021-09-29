@@ -5,19 +5,21 @@ public class Main {
     System.out.println("a aplicacao comecou");
 
     SecretariaPapaiNoel secretariaPapaiNoel = new SecretariaPapaiNoel();
+    secretariaPapaiNoel.start();
 
-    PapaiNoel papaiNoel = new PapaiNoel(secretariaPapaiNoel);
-    papaiNoel.start();
+    // PapaiNoel papaiNoel = new PapaiNoel(secretariaPapaiNoel);
+    // papaiNoel.start();
 
     for (int i = 1; i <= 8; i++) {
       Rena rena = new Rena("rena" + i, secretariaPapaiNoel);
       rena.start();
     }
 
-    // System.out.println("Papai Noel está cuidando a fila");
+    for (int i = 1; i <= 3; i++) {
+      Elfo elfo = new Elfo("elfo" + i, secretariaPapaiNoel);
+      elfo.start();
+    }
 
-    // papaiNoel.gerenciarFila();
-
-    System.out.println("acabou a aplicação");
+    // System.out.println("acabou a aplicação");
   }
 }
