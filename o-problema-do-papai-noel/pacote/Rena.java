@@ -1,25 +1,25 @@
 package pacote;
 
 public class Rena extends Thread {
-  SecretariaPapaiNoel secretariaPapaiNoel;
+  PapaiNoel papaiNoel;
   String name;
 
-  public Rena(String name, SecretariaPapaiNoel secretariaPapaiNoel) {
+  public Rena(String name, PapaiNoel papaiNoel) {
     super();
 
-    this.secretariaPapaiNoel = secretariaPapaiNoel;
+    this.papaiNoel = papaiNoel;
     this.name = name;
   }
 
   private void aproveitarFerias() throws InterruptedException {
     System.out.println(this.name + " de ferias");
-    Thread.sleep((int)(15000 + Math.random() * 5000));
+    Thread.sleep((int)(25000 + Math.random() * 55000));
   }
 
   private synchronized void irParaFila() throws InterruptedException {
     System.out.println(this.name + " na fila");
     this.setPriority(Thread.MAX_PRIORITY);
-    secretariaPapaiNoel.adicionarRenaAFila(this);
+    papaiNoel.adicionarRenaAFila(this);
   }
 
   @Override

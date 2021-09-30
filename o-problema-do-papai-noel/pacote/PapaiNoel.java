@@ -1,81 +1,78 @@
 package pacote;
 
+import java.util.ArrayList;
+
 public class PapaiNoel extends Thread {
+  private ArrayList<Rena> filaRenas = new ArrayList<Rena>();
+  private ArrayList<Elfo> filaElfos = new ArrayList<Elfo>();
   private EstadoPapaiNoel estado;
-  private SecretariaPapaiNoel secretariaPapaiNoel;
 
-  public PapaiNoel(SecretariaPapaiNoel secretariaPapaiNoel) {
-    this.setSecretariaPapaiNoel(secretariaPapaiNoel);
-  }
-
-  public SecretariaPapaiNoel getSecretariaPapaiNoel() {
-    return secretariaPapaiNoel;
-  }
-
-  public void setSecretariaPapaiNoel(SecretariaPapaiNoel secretariaPapaiNoel) {
-    this.secretariaPapaiNoel = secretariaPapaiNoel;
-  }
-
-  public EstadoPapaiNoel getEstado() {
-    return estado;
-  }
-
-  public void setEstado(EstadoPapaiNoel estado) {
-    System.out.println("Papai Noel " + estado);
-    this.estado = estado;
-  }
-
-  @Override
-  public void run() {
-    while(true) {
-
-      // this.secretariaPapaiNoel.entregar();
+  private void entregar() throws InterruptedException {
+    if(this.filaRenas.size() >= 8) {
+      this.filaRenas.clear();
+      System.out.println("partiu entregar presentes");
+      this.estado = EstadoPapaiNoel.DISTRIBUINDO_PRESENTES;
+      Thread.sleep((int)(8000));
+      this.estado = EstadoPapaiNoel.ACORDADO;
+      System.out.println("acabou o natal nao precisa mais fazer entregas");
     }
   }
 
-  // public void gerenciarFila() {
-  //   // resolver as threads com mais prioridade que foram setadas já
-  //   // Elfo elfo = filaElfos.get(0);
+  private void discutir() throws InterruptedException {
+    if(this.filaElfos.size() >= 3) {
+      this.filaElfos.remove(0);
+      this.filaElfos.remove(0);
+      this.filaElfos.remove(0);
+      System.out.println("partiu discutir com os elfos");
+      this.estado = EstadoPapaiNoel.DISCUTINDO_PROJETOS;
+      Thread.sleep((int)(4000));
+      this.estado = EstadoPapaiNoel.ACORDADO;
+      System.out.println("acabou de ajudar os elfos");
+    }
+  }
 
-  //   // synchronized(elfo) {
-  //   //   notify();
-  //   // }
+  public void adicionarElfoAFila(Elfo elfo) throws InterruptedException {
+    this.filaElfos.add(elfo);
 
-  //   boolean applicationRun = true;
+    while(this.filaElfos.contains(elfo)) {
+      Thread.sleep((int)(1));
+    }
 
-  //   while(applicationRun) {
-  //     System.out.println("total renas " + this.filaRenas.size());
+    while(estado == EstadoPapaiNoel.DISCUTINDO_PROJETOS) {
+      Thread.sleep((int)(1));
+    }
+  }
 
-  //     if (this.filaRenas.size() == 8) {
-  //       // int count = 0;
+  public void adicionarRenaAFila(Rena rena) throws InterruptedException {
+    this.filaRenas.add(rena);
 
-  //       // System.out.println("rou rou rou vou entregar presentes");
+    while(estado != EstadoPapaiNoel.DISTRIBUINDO_PRESENTES) {
+      Thread.sleep((int)(1));
+    }
 
-  //       this.setEstado(EstadoPapaiNoel.DISTRIBUINDO_PRESENTES);
+    while(estado == EstadoPapaiNoel.DISTRIBUINDO_PRESENTES) {
+      Thread.sleep((int)(1));
+    }
+  }
 
-  //       // notifyAll();
+  public void run() {
+    while(true) {
+      try {
+        Thread.sleep((int)(5000 + Math.random() * 10000));
 
-  //       // while(this.filaRenas.size() > count) {
-  //       //   // this.filaRenas.get(count).notify();
-  //       //   // this.filaRenas.get(count).vai();
-  //       //   count++;
-  //       // }
+        System.out.print("\nPapai Noel acordou");
+        System.out.print(", tem " + filaElfos.size() + " elfos na fila");
+        System.out.println(" e " + filaRenas.size() + " renas na fila");
 
-  //       applicationRun = false;
-  //     }
-  //   }
-  // }
+        this.entregar();
+        this.discutir();
 
-  // @Override
-  // public void run() {
-  //   while (true) {
-  //     try{
-  //       Thread.sleep((int)(Math.random() * 1000));
-  //       this.gerenciarFila();
-  //     }
-  //     catch (InterruptedException e) {
-  //       e.printStackTrace();
-  //     }
-  //   }
-  // }
+        this.estado = EstadoPapaiNoel.DORMINDO;
+
+        System.out.println("Papai Noel voltou a dormir\n");
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+  }
 }
