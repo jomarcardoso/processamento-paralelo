@@ -86,7 +86,7 @@ public class Barbearia {
             synchronized (clientes) {
                 clientes.offer(cliente);
 
-                clientes.notify();
+                clientes.notifyAll();
             }
         } else if (clientes.size() < sofa && barbeirosLivres <= 0) {
             System.out.println("Não há barbeiros disponíveis então o cliente " + cliente.idCliente + " irá esperar no sofá.");
@@ -95,7 +95,7 @@ public class Barbearia {
                 clientes.offer(cliente);
 
                 if (clientes.size() == 1) {
-                    clientes.notify();
+                    clientes.notifyAll();
                 }
             }
 
