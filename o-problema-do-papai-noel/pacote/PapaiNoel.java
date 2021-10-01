@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class PapaiNoel extends Thread {
   private ArrayList<Rena> filaRenas = new ArrayList<Rena>();
   private ArrayList<Elfo> filaElfos = new ArrayList<Elfo>();
-  private EstadoPapaiNoel estado;
+  private EstadoPapaiNoel estado = EstadoPapaiNoel.DORMINDO;
 
   private void entregar() throws InterruptedException {
     if(this.filaRenas.size() >= 8) {
@@ -18,40 +18,64 @@ public class PapaiNoel extends Thread {
     }
   }
 
-  private void discutir() throws InterruptedException {
+  synchronized private void discutir() throws InterruptedException {
     if(this.filaElfos.size() >= 3) {
-      this.filaElfos.remove(0);
-      this.filaElfos.remove(0);
-      this.filaElfos.remove(0);
+      // synchronized(this.filaElfos) {
+        this.filaElfos.remove(0);
+        this.filaElfos.remove(0);
+        this.filaElfos.remove(0);
+        // this.filaElfos.notifyAll();
+      // }
+
       System.out.println("partiu discutir com os elfos");
-      this.estado = EstadoPapaiNoel.DISCUTINDO_PROJETOS;
-      Thread.sleep((int)(4000));
-      this.estado = EstadoPapaiNoel.ACORDADO;
-      System.out.println("acabou de ajudar os elfos");
+
+      // synchronized(this.estado) {
+        this.estado = EstadoPapaiNoel.DISCUTINDO_PROJETOS;
+        notifyAll();
+        // this.estado.notifyAll();
+        Thread.sleep((int)(4000));
+        System.out.println("acabou de ajudar os elfos");
+        this.estado = EstadoPapaiNoel.ACORDADO;
+        // this.estado.notifyAll();
+      // }
+
+        notifyAll();
     }
   }
 
-  public void adicionarElfoAFila(Elfo elfo) throws InterruptedException {
-    this.filaElfos.add(elfo);
+  synchronized public void adicionarElfoAFila(Elfo elfo) throws InterruptedException {
+    // synchronized(this.filaElfos) {
+      this.filaElfos.add(elfo);
 
-    while(this.filaElfos.contains(elfo)) {
-      Thread.sleep((int)(1));
-    }
+      while(this.filaElfos.contains(elfo)) {
+        // Thread.sleep((int)(1));
+        System.out.println(elfo.name + " na fila");
+        wait();
+      }
 
-    while(estado == EstadoPapaiNoel.DISCUTINDO_PROJETOS) {
-      Thread.sleep((int)(1));
-    }
+      while(this.estado == EstadoPapaiNoel.DISCUTINDO_PROJETOS) {
+        // Thread.sleep((int)(1));
+        System.out.println(elfo.name + " sendo atendido");
+        wait();
+      }
+      // }
+
+      System.out.println(elfo.name + " foi atendido");
   }
 
   public void adicionarRenaAFila(Rena rena) throws InterruptedException {
     this.filaRenas.add(rena);
 
-    while(estado != EstadoPapaiNoel.DISTRIBUINDO_PRESENTES) {
-      Thread.sleep((int)(1));
-    }
+    synchronized(this.filaRenas) {
+      while(estado != EstadoPapaiNoel.DISTRIBUINDO_PRESENTES) {
+        // Thread.sleep((int)(1));
+        rena.wait();
+      }
 
-    while(estado == EstadoPapaiNoel.DISTRIBUINDO_PRESENTES) {
-      Thread.sleep((int)(1));
+      while(estado == EstadoPapaiNoel.DISTRIBUINDO_PRESENTES) {
+        // Thread.sleep((int)(1));
+        rena.wait();
+      }
     }
   }
 

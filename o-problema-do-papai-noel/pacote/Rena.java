@@ -16,7 +16,7 @@ public class Rena extends Thread {
     Thread.sleep((int)(25000 + Math.random() * 55000));
   }
 
-  private synchronized void irParaFila() throws InterruptedException {
+  private void irParaFila() throws InterruptedException {
     System.out.println(this.name + " na fila");
     this.setPriority(Thread.MAX_PRIORITY);
     papaiNoel.adicionarRenaAFila(this);

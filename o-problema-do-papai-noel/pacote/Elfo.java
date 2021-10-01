@@ -16,8 +16,7 @@ public class Elfo extends Thread {
     Thread.sleep((int)(4000 + Math.random() * 35000));
   }
 
-  private synchronized void irParaFila() throws InterruptedException {
-    System.out.println(this.name + " na fila");
+  private void irParaFila() throws InterruptedException {
     this.setPriority(Thread.MIN_PRIORITY);
     papaiNoel.adicionarElfoAFila(this);
   }
