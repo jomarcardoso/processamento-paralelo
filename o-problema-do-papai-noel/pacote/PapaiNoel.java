@@ -3,72 +3,76 @@ package pacote;
 import java.util.ArrayList;
 
 public class PapaiNoel extends Thread {
-  private EstadoPapaiNoel estado;
-  private ArrayList<Elfo> filaElfos = new ArrayList<Elfo>();
   private ArrayList<Rena> filaRenas = new ArrayList<Rena>();
+  private ArrayList<Elfo> filaElfos = new ArrayList<Elfo>();
+  private EstadoPapaiNoel estado;
 
-  public EstadoPapaiNoel getEstado() {
-    return estado;
+  private void entregar() throws InterruptedException {
+    if(this.filaRenas.size() >= 8) {
+      this.filaRenas.clear();
+      System.out.println("partiu entregar presentes");
+      this.estado = EstadoPapaiNoel.DISTRIBUINDO_PRESENTES;
+      Thread.sleep((int)(8000));
+      this.estado = EstadoPapaiNoel.ACORDADO;
+      System.out.println("acabou o natal nao precisa mais fazer entregas");
+    }
   }
 
-  public void setEstado(EstadoPapaiNoel estado) {
-    System.out.println("Papai Noel " + estado);
-    this.estado = estado;
+  private void discutir() throws InterruptedException {
+    if(this.filaElfos.size() >= 3) {
+      this.filaElfos.remove(0);
+      this.filaElfos.remove(0);
+      this.filaElfos.remove(0);
+      System.out.println("partiu discutir com os elfos");
+      this.estado = EstadoPapaiNoel.DISCUTINDO_PROJETOS;
+      Thread.sleep((int)(4000));
+      this.estado = EstadoPapaiNoel.ACORDADO;
+      System.out.println("acabou de ajudar os elfos");
+    }
   }
 
   public void adicionarElfoAFila(Elfo elfo) throws InterruptedException {
     this.filaElfos.add(elfo);
-    elfo.wait();
+
+    while(this.filaElfos.contains(elfo)) {
+      Thread.sleep((int)(1));
+    }
+
+    while(estado == EstadoPapaiNoel.DISCUTINDO_PROJETOS) {
+      Thread.sleep((int)(1));
+    }
   }
 
   public void adicionarRenaAFila(Rena rena) throws InterruptedException {
     this.filaRenas.add(rena);
-    rena.wait();
-  }
 
-  public void gerenciarFila() {
-    // resolver as threads com mais prioridade que foram setadas já
-    // Elfo elfo = filaElfos.get(0);
+    while(estado != EstadoPapaiNoel.DISTRIBUINDO_PRESENTES) {
+      Thread.sleep((int)(1));
+    }
 
-    // synchronized(elfo) {
-    //   notify();
-    // }
-
-    boolean applicationRun = true;
-
-    while(applicationRun) {
-      System.out.println("total renas " + this.filaRenas.size());
-
-      if (this.filaRenas.size() == 8) {
-        // int count = 0;
-
-        // System.out.println("rou rou rou vou entregar presentes");
-
-        this.setEstado(EstadoPapaiNoel.DISTRIBUINDO_PRESENTES);
-
-        // notifyAll();
-
-        // while(this.filaRenas.size() > count) {
-        //   // this.filaRenas.get(count).notify();
-        //   // this.filaRenas.get(count).vai();
-        //   count++;
-        // }
-
-        applicationRun = false;
-      }
+    while(estado == EstadoPapaiNoel.DISTRIBUINDO_PRESENTES) {
+      Thread.sleep((int)(1));
     }
   }
 
-  // @Override
-  // public void run() {
-  //   while (true) {
-  //     try{
-  //       Thread.sleep((int)(Math.random() * 1000));
-  //       this.gerenciarFila();
-  //     }
-  //     catch (InterruptedException e) {
-  //       e.printStackTrace();
-  //     }
-  //   }
-  // }
+  public void run() {
+    while(true) {
+      try {
+        Thread.sleep((int)(5000 + Math.random() * 10000));
+
+        System.out.print("\nPapai Noel acordou");
+        System.out.print(", tem " + filaElfos.size() + " elfos na fila");
+        System.out.println(" e " + filaRenas.size() + " renas na fila");
+
+        this.entregar();
+        this.discutir();
+
+        this.estado = EstadoPapaiNoel.DORMINDO;
+
+        System.out.println("Papai Noel voltou a dormir\n");
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+  }
 }
