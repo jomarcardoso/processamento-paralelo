@@ -10,7 +10,11 @@ public class Barbeiro extends Thread {
 
     public void run() {
         while(true) {
-            barbearia.cortar(idBarbeiro);
+            try {
+                barbearia.cortar(idBarbeiro);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -1,12 +1,15 @@
+import java.util.Random;
+
 public class BarbeiroDorminhoco {
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws InterruptedException {
 
         int qntMaxClientes = 20;
         int qntMaquininhas = 1;
         int qntBarbeiros = 3;
         int qntSofa = 4;
         int idCliente = 1;
+        Random random = new Random();
 
         Barbearia barbearia = new Barbearia(qntBarbeiros, qntMaxClientes, qntSofa, qntMaquininhas);
 
@@ -15,7 +18,8 @@ public class BarbeiroDorminhoco {
             barbeiro.start();
         }
 
-        while (true) {
+        while (idCliente < 200) {
+            Thread.sleep(random.nextInt(5));
             Cliente cliente = new Cliente(idCliente, barbearia);
             idCliente++;
             cliente.start();
