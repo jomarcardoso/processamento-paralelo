@@ -16,7 +16,5 @@ public class Main {
       Elfo elfo = new Elfo("elfo" + i, papaiNoel);
       elfo.start();
     }
-
-    // System.out.println("acabou a aplicação");
   }
 }
