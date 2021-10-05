@@ -1,4 +1,4 @@
-package pacote;
+package noel;
 
 import java.util.ArrayList;
 
@@ -8,49 +8,51 @@ public class PapaiNoel extends Thread {
   private EstadoPapaiNoel estado = EstadoPapaiNoel.DORMINDO;
 
   synchronized private void entregar() throws InterruptedException {
-    if(this.filaRenas.size() >= 8) {
-      this.filaRenas.clear();
+    if(this.filaRenas.size() >= 9) {
 
+      System.out.println("\nPapai Noel acordou");
+      System.out.println("tem " + filaRenas.size() + " renas na fila");
       System.out.println("partiu entregar presentes");
 
       this.estado = EstadoPapaiNoel.DISTRIBUINDO_PRESENTES;
       notifyAll();
-      Thread.sleep((int)(8000));
       this.estado = EstadoPapaiNoel.ACORDADO;
       notifyAll();
 
+      this.filaRenas.clear();
       System.out.println("acabou o natal nao precisa mais fazer entregas");
     }
   }
 
   synchronized private void discutir() throws InterruptedException {
     if(this.filaElfos.size() >= 3) {
-      this.filaElfos.remove(0);
-      this.filaElfos.remove(0);
-      this.filaElfos.remove(0);
-
+      System.out.println("\nPapai Noel acordou");
+      System.out.println("tem 3 elfos na fila");
       System.out.println("partiu discutir com os elfos");
 
       this.estado = EstadoPapaiNoel.DISCUTINDO_PROJETOS;
       notifyAll();
-      Thread.sleep((int)(4000));
       System.out.println("acabou de ajudar os elfos");
       this.estado = EstadoPapaiNoel.ACORDADO;
-
       notifyAll();
+
+      this.filaElfos.clear();
     }
   }
 
   synchronized public void adicionarElfoAFila(Elfo elfo) throws InterruptedException {
-    this.filaElfos.add(elfo);
+    if (this.filaElfos.size() >= 3) {
+      System.out.println(this.filaElfos.get(2).name);
+      System.out.println(elfo.name + " nao pode ser atendido, fila cheia");
 
-    while(this.filaElfos.contains(elfo)) {
-      System.out.println(elfo.name + " na fila");
-      wait();
+      return;
     }
 
-    while(this.estado == EstadoPapaiNoel.DISCUTINDO_PROJETOS) {
-      System.out.println(elfo.name + " sendo atendido");
+    this.filaElfos.add(elfo);
+    notifyAll();
+    System.out.println(elfo.name + " foi para a fila");
+
+    while(this.filaElfos.contains(elfo)) {
       wait();
     }
 
@@ -58,35 +60,38 @@ public class PapaiNoel extends Thread {
   }
 
   synchronized public void adicionarRenaAFila(Rena rena) throws InterruptedException {
+    System.out.println(rena.name + " foi para a fila");
     this.filaRenas.add(rena);
+    notifyAll();
 
-    while(estado != EstadoPapaiNoel.DISTRIBUINDO_PRESENTES) {
+    while(this.filaRenas.contains(rena)) {
       wait();
     }
 
-    while(estado == EstadoPapaiNoel.DISTRIBUINDO_PRESENTES) {
-      wait();
+    System.out.println(rena.name + " foi atendida");
+  }
+
+  synchronized public void dormirAteQue() {
+    try {
+      while(true) {
+        this.entregar();
+        this.discutir();
+
+        if (this.estado != EstadoPapaiNoel.DORMINDO) {
+          this.estado = EstadoPapaiNoel.DORMINDO;
+          System.out.println("Papai Noel voltou a dormir\n");
+        }
+
+
+        wait();
+      }
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
   }
 
   public void run() {
-    while(true) {
-      try {
-        Thread.sleep((int)(5000 + Math.random() * 10000));
-
-        System.out.print("\nPapai Noel acordou");
-        System.out.print(", tem " + filaElfos.size() + " elfos na fila");
-        System.out.println(" e " + filaRenas.size() + " renas na fila");
-
-        this.entregar();
-        this.discutir();
-
-        this.estado = EstadoPapaiNoel.DORMINDO;
-
-        System.out.println("Papai Noel voltou a dormir\n");
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-    }
+    this.dormirAteQue();
   }
 }

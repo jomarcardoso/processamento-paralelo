@@ -1,4 +1,4 @@
-package pacote;
+package noel;
 
 public class Elfo extends Thread {
   PapaiNoel papaiNoel;
@@ -17,7 +17,6 @@ public class Elfo extends Thread {
   }
 
   private void irParaFila() throws InterruptedException {
-    this.setPriority(Thread.MIN_PRIORITY);
     papaiNoel.adicionarElfoAFila(this);
   }
 
@@ -27,7 +26,6 @@ public class Elfo extends Thread {
       while(true) {
         this.fabricarBrinquedos();
         this.irParaFila();
-        Thread.sleep((int)(1000));
       }
     } catch (InterruptedException e) {
       e.printStackTrace();

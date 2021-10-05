@@ -1,4 +1,4 @@
-package pacote;
+package noel;
 
 public class Rena extends Thread {
   PapaiNoel papaiNoel;
@@ -13,12 +13,10 @@ public class Rena extends Thread {
 
   private void aproveitarFerias() throws InterruptedException {
     System.out.println(this.name + " de ferias");
-    Thread.sleep((int)(25000 + Math.random() * 55000));
+    Thread.sleep((int)(25000 + Math.random() * 5000));
   }
 
   private void irParaFila() throws InterruptedException {
-    System.out.println(this.name + " na fila");
-    this.setPriority(Thread.MAX_PRIORITY);
     papaiNoel.adicionarRenaAFila(this);
   }
 
@@ -28,7 +26,6 @@ public class Rena extends Thread {
       while(true) {
         this.aproveitarFerias();
         this.irParaFila();
-        Thread.sleep((int)(1000));
       }
     } catch (InterruptedException e) {
       e.printStackTrace();

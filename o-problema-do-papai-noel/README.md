@@ -26,6 +26,6 @@ Obs: As definições devem ser complementadas com a literatura.
 ## Projeto
 
 ```bash
-javac pacote/Main.java -d dist
-cd dist && java pacote.Main && cd ..
+javac noel/Main.java -d dist
+cd dist && java noel.Main && cd ..
 ```

@@ -1,4 +1,4 @@
-package pacote;
+package noel;
 
 public enum EstadoPapaiNoel {
   ACORDADO,
