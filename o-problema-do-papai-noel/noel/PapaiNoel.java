@@ -7,7 +7,7 @@ public class PapaiNoel extends Thread {
   private ArrayList<Elfo> filaElfos = new ArrayList<Elfo>();
   private EstadoPapaiNoel estado = EstadoPapaiNoel.DORMINDO;
 
-  synchronized private void entregar() throws InterruptedException {
+  private void entregar() throws InterruptedException {
     if(this.filaRenas.size() >= 9) {
 
       System.out.println("\nPapai Noel acordou");
@@ -24,7 +24,7 @@ public class PapaiNoel extends Thread {
     }
   }
 
-  synchronized private void discutir() throws InterruptedException {
+  private void discutir() throws InterruptedException {
     if(this.filaElfos.size() >= 3) {
       System.out.println("\nPapai Noel acordou");
       System.out.println("tem 3 elfos na fila");
