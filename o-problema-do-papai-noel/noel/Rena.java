@@ -2,17 +2,17 @@ package noel;
 
 public class Rena extends Thread {
   PapaiNoel papaiNoel;
-  String name;
+  String nome;
 
-  public Rena(String name, PapaiNoel papaiNoel) {
+  public Rena(String nome, PapaiNoel papaiNoel) {
     super();
 
     this.papaiNoel = papaiNoel;
-    this.name = name;
+    this.nome = nome;
   }
 
   private void aproveitarFerias() throws InterruptedException {
-    System.out.println(this.name + " de ferias");
+    System.out.println(nome + " de ferias");
     Thread.sleep((int)(25000 + Math.random() * 5000));
   }
 
@@ -24,8 +24,8 @@ public class Rena extends Thread {
   public void run() {
     try {
       while(true) {
-        this.aproveitarFerias();
-        this.irParaFila();
+        aproveitarFerias();
+        irParaFila();
       }
     } catch (InterruptedException e) {
       e.printStackTrace();

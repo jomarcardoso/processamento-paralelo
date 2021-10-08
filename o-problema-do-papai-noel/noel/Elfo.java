@@ -2,17 +2,17 @@ package noel;
 
 public class Elfo extends Thread {
   PapaiNoel papaiNoel;
-  String name;
+  String nome;
 
-  public Elfo(String name, PapaiNoel papaiNoel) {
+  public Elfo(String nome, PapaiNoel papaiNoel) {
     super();
 
     this.papaiNoel = papaiNoel;
-    this.name = name;
+    this.nome = nome;
   }
 
   private void fabricarBrinquedos() throws InterruptedException {
-    System.out.println(this.name + " fabricando brinquedos");
+    System.out.println(nome + " fabricando brinquedos");
     Thread.sleep((int)(4000 + Math.random() * 35000));
   }
 
@@ -24,8 +24,8 @@ public class Elfo extends Thread {
   public void run() {
     try {
       while(true) {
-        this.fabricarBrinquedos();
-        this.irParaFila();
+        fabricarBrinquedos();
+        irParaFila();
       }
     } catch (InterruptedException e) {
       e.printStackTrace();
