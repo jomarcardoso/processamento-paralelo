@@ -18,7 +18,7 @@ public class BarbeiroDorminhoco {
             barbeiro.start();
         }
 
-        while (idCliente < 200) {
+        while (true) {
             Thread.sleep(random.nextInt(5));
             Cliente cliente = new Cliente(idCliente, barbearia);
             idCliente++;
