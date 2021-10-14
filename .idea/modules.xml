@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Figaro/Figaro.iml" filepath="$PROJECT_DIR$/Figaro/Figaro.iml" />
+      <module fileurl="file://$PROJECT_DIR$/processamento-paralelo.iml" filepath="$PROJECT_DIR$/processamento-paralelo.iml" />
+    </modules>
+  </component>
+</project>
